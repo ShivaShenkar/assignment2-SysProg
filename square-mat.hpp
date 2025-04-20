@@ -1,3 +1,5 @@
+
+
 #include <iostream>
 namespace Matrix
 {
@@ -7,6 +9,7 @@ namespace Matrix
           int size;
           double **mat;
           int* sum;
+
           
           
         public:
@@ -15,6 +18,17 @@ namespace Matrix
             for (int i = 0; i < size; ++i)
               delete[] mat[i];
             delete[] mat;
+            delete sum;
+          }
+          SquareMat(const SquareMat& other) : size(other.size) {
+            mat = new double*[size];
+            sum = new int(*other.sum);
+            for (int i = 0; i < size; ++i) {
+                mat[i] = new double[size];
+                for (int j = 0; j < size; ++j) {
+                    mat[i][j] = other.mat[i][j];
+                }
+            }
           }
           int getSize() const {return size;}
           void set(int i, int j, double value){
@@ -27,109 +41,114 @@ namespace Matrix
               throw std::out_of_range("Index out of range");
             return mat[i][j];
           }
-          SquareMat operator+ (SquareMat &mat2);
-          SquareMat operator- (SquareMat &mat2);
+          SquareMat operator+ (SquareMat mat2);
+          SquareMat operator- (SquareMat mat2);
           SquareMat operator-(){
-            SquareMat *result = new SquareMat(this->size);
+            SquareMat result(this->size);
             for(int i = 0; i < size; ++i)
-              for(int j = 0; j < size; ++j)
-                mat[i][j] = -mat[i][j];
-            (*result).calculateSum();    
-            return *result;
+                for(int j = 0; j < size; ++j)
+                    result.set(i, j, -this->get(i, j));
+            result.calculateSum();    
+            return result;
           }
-          SquareMat operator* (SquareMat &mat2);
-          SquareMat operator* (double &scalar){
-            SquareMat *result = new SquareMat(this->size);
+          SquareMat operator* (SquareMat mat2);
+          SquareMat operator* (double scalar){
+            SquareMat result(this->size);
             for(int i = 0; i < size; ++i){
               for(int j = 0; j < size; ++j)
-              result->set(i,j, this->get(i,j) * scalar);
+              result.set(i,j, this->get(i,j) * scalar);
             }
-            return *result;
+            return result;
           }
-          SquareMat operator% (SquareMat &mat2);
-          SquareMat operator% (int &scalar);
+          friend SquareMat operator*(double scalar, SquareMat mat);
+          SquareMat operator% (SquareMat mat2);
+          SquareMat operator% (int scalar);
           SquareMat operator/ (double &scalar){
-            SquareMat *result = new SquareMat(this->size);
-            for (int i = 0; i < this->size; ++i){
+            SquareMat result(this->size);
+            for (int i = 0; i < this->size; ++i)
                 for (int j = 0; j < this->size; ++j)
-                    result->set(i,j, this->get(i,j) / scalar);
-            }
-            return *result;
+                    result.set(i, j, this->get(i, j) / scalar);
+            result.calculateSum();
+            return result;
           }
-          SquareMat operator^ (int &scalar);
+          SquareMat operator^ (int scalar);
           SquareMat operator++(); // pre-increment     
           SquareMat operator++(int); // post-increment
           SquareMat operator--(); // pre-decrement 
           SquareMat operator--(int); // post-decrement
           SquareMat operator~(){
-            SquareMat *result = new SquareMat(this->size);
-            for(int i = 0; i < size; ++i){
-                for(int j = 0; j < size; ++j){
-                    result->set(j,i,mat[i][j]);
-                }
-            }
-            return *result; 
+            SquareMat result(this->size);
+            for(int i = 0; i < size; ++i)
+                for(int j = 0; j < size; ++j)
+                    result.set(j, i, this->get(i, j));
+            result.calculateSum();
+            return result; 
           }
           double* operator[](int i){
             if(i<0||i>=size)
                 throw std::invalid_argument("index out of bounds");
             return mat[i];
           }
-          bool operator==(SquareMat &mat2){
+          bool operator==(SquareMat mat2){
             return this->sum==mat2.sum;
           }
-          bool operator!=(SquareMat &mat2){
+          bool operator!=(SquareMat mat2){
             return this->sum!=mat2.sum;
           }
-          bool operator>(SquareMat &mat2){
+          bool operator>(SquareMat mat2){
             return this->sum > mat2.sum;
           }
-          bool operator<(SquareMat &mat2){
+          bool operator<(SquareMat mat2){
             return this->sum<mat2.sum;
           }
-          bool operator>=(SquareMat &mat2){
+          bool operator>=(SquareMat mat2){
             return this->sum>=mat2.sum;
           }
-          bool operator<=(SquareMat &mat2){
+          bool operator<=(SquareMat mat2){
             return this->sum<=mat2.sum;
           }
-          void calculateSum(){
-            for(int i=0;i<size;i++){
-                for(int j=0;j<size;j++){
-                    *sum+=*this[i][j];
+          void calculateSum() {
+            *sum = 0;
+            for(int i = 0; i < size; i++) {
+                for(int j = 0; j < size; j++) {
+                    *sum += mat[i][j];  
                 }
             }
           }
           double operator!();
-          SquareMat operator+=(SquareMat &mat2){
+          SquareMat operator=(SquareMat mat2);
+          SquareMat operator+=(SquareMat mat2){
               *this = *this + mat2;
               return *this;
           }
-          SquareMat operator-=(SquareMat &mat2){
+          SquareMat operator-=(SquareMat mat2){
             *this = *this - mat2;
             return *this;
           }
-          SquareMat operator*=(SquareMat &mat2){
+          SquareMat operator*=(SquareMat mat2){
             *this = *this * mat2;
             return *this;
           }
-          SquareMat operator%=(int &scalar){
+          SquareMat operator%=(int scalar){
             *this = *this % scalar;
             return *this;
           }
-          SquareMat operator%=(SquareMat &mat2){
+          SquareMat operator%=(SquareMat mat2){
             *this = *this % mat2;
             return *this;
           }
-          SquareMat operator*=(double &scalar){
+          SquareMat operator*=(double scalar){
             *this = *this *scalar;
             return *this;
           }
-          SquareMat operator/=(double &scalar){
+          SquareMat operator/=(double scalar){
             *this = *this /scalar;
             return *this;
           }
-          friend std::ostream& operator<<(std::ostream& os,SquareMat &mat);
+          SquareMat createAMinor(int row,int col,SquareMat mat);
+          void setIdentity(SquareMat mat);
+          friend std::ostream& operator<<(std::ostream& os,SquareMat mat);
+
 
 
             
