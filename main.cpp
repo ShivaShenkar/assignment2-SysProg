@@ -1,4 +1,4 @@
-#include "square-mat.hpp"
+    #include "square-mat.hpp"
 using namespace Matrix;
 int main(){
     int count=0;
@@ -42,6 +42,7 @@ int main(){
     std::cout << "mat1 == mat6: " << (mat1 == mat6) << std::endl;
 
     // Test 6: Inequality operator
+    std::cout << "mat2:\n" << mat2 << std::endl;
     std::cout << "Test 6: Inequality operator\n";
     std::cout << "mat1 != mat2: " << (mat1 != mat2) << std::endl;
 

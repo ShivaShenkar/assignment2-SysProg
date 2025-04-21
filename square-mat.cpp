@@ -18,8 +18,7 @@ namespace Matrix
         SquareMat result(this->size);
         for (int i = 0; i < this->size; ++i)
             for (int j = 0; j < this->size; ++j)
-                result.set(i, j, this->get(i, j) + mat2.get(i, j));
-        result.calculateSum();        
+                result.set(i, j, this->get(i, j) + mat2.get(i, j));       
         return result;
     }
     SquareMat SquareMat::operator-(SquareMat mat2) {
@@ -30,7 +29,6 @@ namespace Matrix
         for (int i = 0; i < this->size; ++i)
             for (int j = 0; j < this->size; ++j)
                 result.set(i, j, this->get(i, j) - mat2.get(i, j));
-        result.calculateSum();
         return result;
     }
 
@@ -44,7 +42,6 @@ namespace Matrix
                 result.set(i, j, scalar * mat.get(i, j)); 
             }
         }
-        result.calculateSum();
         return result; 
     }
 
@@ -59,7 +56,6 @@ namespace Matrix
             for (int j = 0; j < this->size; ++j)
                 for (int k = 0; k < this->size; ++k)
                     result.set(i, j, result.get(i, j) + this->get(i, k) * mat2.get(k, j));
-        result.calculateSum();
         return result;
     }
 
@@ -71,7 +67,6 @@ namespace Matrix
         for (int i = 0; i < this->size; ++i)
             for (int j = 0; j < this->size; ++j)
                 result.set(i, j, this->get(i, j) * mat2.get(i, j));
-        result.calculateSum();
         return result;
     }
     SquareMat SquareMat::operator%(int scalar) {
@@ -79,7 +74,6 @@ namespace Matrix
         for (int i = 0; i < this->size; ++i)
             for (int j = 0; j < this->size; ++j)
                 result.set(i, j, this->get(i, j) * scalar);
-        result.calculateSum();
         return result;
     }
     
@@ -87,13 +81,12 @@ namespace Matrix
         if(scalar<0)
             throw std::invalid_argument("Exponent must be non-negative");
         SquareMat result(this->size);
-        setIdentity(result);
-        
+        result.setIdentity();
+
         for(int i = 0; i < scalar; i++) {
             SquareMat temp = result * (*this);
             result = temp;
         }
-        result.calculateSum();
         return result;
     }
     SquareMat SquareMat::operator++(){
@@ -102,7 +95,6 @@ namespace Matrix
                 ++(this->mat[i][j]);
             }
         }
-        this->calculateSum();
         return *this;
         
     }
@@ -112,7 +104,6 @@ namespace Matrix
                 (this->mat[i][j])++;
             }
         }
-        this->calculateSum();
         return *this;
     }
     SquareMat SquareMat::operator--(){
@@ -121,7 +112,6 @@ namespace Matrix
                 --(this->mat[i][j]);
             }
         }
-        this->calculateSum();
         return *this;
         
     }
@@ -131,7 +121,6 @@ namespace Matrix
                 (this->mat[i][j])--;
             }
         }
-        this->calculateSum();
         return *this;
         
     }
@@ -148,13 +137,13 @@ namespace Matrix
         }
     }
 
-    void SquareMat::setIdentity(SquareMat mat){
-        for(int i=0;i<mat.getSize();i++){
-            for(int j=0;j<mat.getSize();j++){
+    void SquareMat::setIdentity(){
+        for(int i=0;i<this->getSize();i++){
+            for(int j=0;j<this->getSize();j++){
                 if(i==j)
-                    mat.set(i,j,1);
+                    this->set(i,j,1);
                 else
-                    mat.set(i,j,0);
+                    this->set(i,j,0);
             }
         }
     }
@@ -204,7 +193,6 @@ namespace Matrix
                 this->set(i, j, mat2.get(i, j));
             }
         }
-        this->calculateSum();
         return *this;
     }
 
