@@ -31,3 +31,12 @@ This project implements a `SquareMat` class for performing various operations on
 - **Indexing Operator**: Access matrix elements using `[]`.
 
 ## Project Structure
+
+-**main.cpp
+-**square-mat.cpp
+-**square-mat.hpp
+-**test.cpp
+-**doctest.h
+-**makefile
+-**a.out
+-**test.out
