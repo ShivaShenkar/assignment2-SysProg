@@ -32,11 +32,11 @@ This project implements a `SquareMat` class for performing various operations on
 
 ## Project Structure
 
--**main.cpp
--**square-mat.cpp
--**square-mat.hpp
--**test.cpp
--**doctest.h
--**makefile
--**a.out
--**test.out
+- **main.cpp**
+- **square-mat.cpp**
+- **square-mat.hpp**
+- **test.cpp**
+- **doctest.h**
+- **makefile**
+- **a.out**
+- **test.out**
