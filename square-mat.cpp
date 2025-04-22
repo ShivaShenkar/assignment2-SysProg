@@ -7,6 +7,8 @@ namespace Matrix
     // Constructor
     SquareMat::SquareMat(int n) : size(n)
     {
+        if(n <= 0)
+            throw std::invalid_argument("Matrix size must be positive");
         mat = new double*[size];
         sum = new int(0);
         for (int i = 0; i < size; ++i)
