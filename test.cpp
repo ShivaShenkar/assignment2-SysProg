@@ -1,3 +1,5 @@
+//fikhman2005@gmail.com
+
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 #include "square-mat.hpp"
@@ -268,6 +270,8 @@ TEST_CASE("Matrix Power") {
     CHECK(result.get(0, 1) == 10);  // 1*2 + 2*4 = 10
     CHECK(result.get(1, 0) == 15);  // 3*1 + 4*3 = 15
     CHECK(result.get(1, 1) == 22);  // 3*2 + 4*4 = 22
+
+    CHECK_THROWS_AS(mat ^ -1, std::invalid_argument); // Negative power
 }
 
 // Pre-increment
@@ -494,6 +498,8 @@ TEST_CASE("Matrix Compound Assignment") {
     mat2.set(0, 1, 6);
     mat2.set(1, 0, 7);
     mat2.set(1, 1, 8);
+    SquareMat mat3(3);
+    mat3.setIdentity();
     
     // +=
     {
@@ -503,6 +509,8 @@ TEST_CASE("Matrix Compound Assignment") {
         CHECK(result.get(0, 1) == 8);  // 2 + 6
         CHECK(result.get(1, 0) == 10); // 3 + 7
         CHECK(result.get(1, 1) == 12); // 4 + 8
+        CHECK_THROWS_AS(result += mat3, std::invalid_argument); // Different sizes
+
     }
     
     // -=
@@ -513,6 +521,7 @@ TEST_CASE("Matrix Compound Assignment") {
         CHECK(result.get(0, 1) == 4);  // 6 - 2
         CHECK(result.get(1, 0) == 4);  // 7 - 3
         CHECK(result.get(1, 1) == 4);  // 8 - 4
+        CHECK_THROWS_AS(result -= mat3, std::invalid_argument); // Different sizes
     }
     
     // *=
@@ -523,6 +532,7 @@ TEST_CASE("Matrix Compound Assignment") {
         CHECK(result.get(0, 1) == 22); // 1*6 + 2*8
         CHECK(result.get(1, 0) == 43); // 3*5 + 4*7
         CHECK(result.get(1, 1) == 50); // 3*6 + 4*8
+        CHECK_THROWS_AS(result -= mat3, std::invalid_argument); // Different sizes
     }
     
     // *= (scalar)
@@ -533,6 +543,7 @@ TEST_CASE("Matrix Compound Assignment") {
         CHECK(result.get(0, 1) == 4);  // 2*2
         CHECK(result.get(1, 0) == 6);  // 3*2
         CHECK(result.get(1, 1) == 8);  // 4*2
+        CHECK_THROWS_AS(result *= mat3, std::invalid_argument); // Different sizes
     }
     
     // /=
@@ -553,6 +564,7 @@ TEST_CASE("Matrix Compound Assignment") {
         CHECK(result.get(0, 1) == 12); // 2*6
         CHECK(result.get(1, 0) == 21); // 3*7
         CHECK(result.get(1, 1) == 32); // 4*8
+        CHECK_THROWS_AS(result %= mat3, std::invalid_argument); // Different sizes
     }
     
     // %= (scalar)

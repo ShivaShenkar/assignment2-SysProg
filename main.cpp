@@ -1,4 +1,5 @@
-    #include "square-mat.hpp"
+//fikhman2005@gmail.com
+#include "square-mat.hpp"
 using namespace Matrix;
 int main(){
     int count=0;
@@ -65,6 +66,5 @@ int main(){
     std::cout << "Test 10: Output operator\n";
     std::cout << "Matrix mat1:\n" << mat1 << std::endl;
 
-    std::cout << "All tests completed!" << std::endl;
     return 0;
 }
